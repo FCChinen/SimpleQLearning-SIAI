@@ -15,16 +15,17 @@ import numpy as np
 import random as rd
 import pprint
 import pandas as pd
-from typing import Dict, List
+
 class qtable:
     """
     v0 are the initial values for the Q-Table.
     """
-    def __init__(self, alpha = 0.7 , discount = 0.99, egreedy = 1, decay_rate = 0.93, min_steps = 1000, actions = [0, 1, 2, 3], N = 8, goal_reward = 10):
+    def __init__(self, alpha = 0.7 , discount = 0.99, egreedy = 1, decay_rate = 0.999, min_steps = 1000, actions = [0, 1, 2, 3], N = 8, goal_reward = 10):
         self.actions = actions
         self.N = N # matrix NxN
         self.QTable = {}
         self.goal_reward = goal_reward
+        
         
         self.alpha = alpha # Taxa de aprendizado
         self.discount = discount # Taxa de desconto
@@ -35,6 +36,10 @@ class qtable:
         self.create_positions()
 
         self.create_dictionary()
+
+        # Dicionário que irá conter a quantidade de vezes que o agente passa pelo estado
+        self.count_dict = {}
+        self.create_count_dict()
 
 
         # As variáveis daqui para frente, são apenas para verificar performance
@@ -61,9 +66,23 @@ class qtable:
             for j in self.actions:
                 aux[j] = 0#rd.random()
                 #aux[j] = rd.random()
-            #pos_dic = self.pos_to_num(pos[0],pos[1]) # A posição não precisa ser convertida
-            pos_dic = str(pos[0])+'-'+str(pos[1])
-            self.QTable[pos_dic] = aux
+            #pos_dict = self.pos_to_num(pos[0],pos[1]) # A posição não precisa ser convertida
+            pos_dict = str(pos[0])+'-'+str(pos[1])
+            self.QTable[pos_dict] = aux
+
+    def create_count_dict(self):
+        """
+        Contagem de vezes que o agente esteve no estado
+        """
+        for pos in self.array_pos:
+            pos_dict = str(pos[0])+'-'+str(pos[1])
+            self.count_dict[pos_dict] = 0
+
+    def print_count_dict(self):
+        pp = pprint.PrettyPrinter(indent = 4)
+        pp.pprint(self.count_dict)
+
+
 
     def print_qtable(self):
 

@@ -28,7 +28,7 @@ ação 4 anda para baixo
 import numpy as np
 
 class Funcao:
-    def __init__(self, p0x = -2, p0y = -2, tamanho_passo = 0.2, limite_x = 2.0, limite_y = 2.0):
+    def __init__(self, p0x = -1.6, p0y = -1.6, tamanho_passo = 0.2, limite_x = 2.0, limite_y = 2.0):
         self.p0x = p0x # Posição inicial x do a gente
         self.px = p0x # Posição inicial x do agente
         self.p0y = p0y
@@ -66,9 +66,10 @@ class Funcao:
         elif (self.py > self.limite_y) or (self.py < (-1)*self.limite_y): # Saiu do limite no eixo y
             return -10.0
         else:
-            # Caso se aproxima do máximo global, aumenta
+            # Caso se aproxima do mínimo global, aumenta
             # Senão diminui.
-            return self.curz - self.lastcurz 
+            #return self.curz - self.lastcurz 
+            return self.lastcurz - self.curz
 
     def terminate(self):
         """
@@ -89,11 +90,11 @@ class Funcao:
         """
         Essa função retorna a próxima posição
         """
-        if action == 1:
+        if action == 0:
             return self.px + self.tamanho_passo, self.py
-        elif action == 2:
+        elif action == 1:
             return self.px - self.tamanho_passo, self.py
-        elif action == 3:
+        elif action == 2:
             return self.px, self.py + self.tamanho_passo
         else:
             return self.px, self.py - self.tamanho_passo
